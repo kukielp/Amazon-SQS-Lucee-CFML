@@ -23,14 +23,26 @@ component
 	public void function onApplicationStart() {
 
 		var config = deserializeJson( fileRead( "./config.json" ) );
+		var accessID = '';
+		var secretKey = '';
+		var environment;
+
+		if(StructKeyExists(server.system.environment, 'env') && server.system.environment.env == 'dev'){
+			accessID = server.system.environment.TestACCESS_KEY;
+			secretKey = server.system.environment.TestSECRET_KEY;
+			environment = 'DEV'
+		}else{
+			environment = 'PROD'
+		}
 
 		application.sqsClient = new SqsClient(
+			environment = environment,
 			classLoader = new AwsClassLoader(),
-			accessID = config.aws.accessID,
-			secretKey = config.aws.secretKey,
+			accessID = accessID,
+			secretKey = secretKey,
 			region = config.aws.region,
 			queueName = config.aws.queue,
-			defaultWaitTime = 20,
+			defaultWaitTime = 2,
 			defaultVisibilityTimeout = 60
 		);
 

@@ -1,0 +1,15 @@
+version: '3'
+services:
+  acf:
+    image: lucee/lucee:5.3-nginx
+    ports: 
+      - "80:80"
+    container_name: cfml-lucee-sqs-demo
+    environment:
+      - env=dev
+    env_file:
+      - ./config/.env
+    volumes:
+      - ./demos/hello-world:/var/www
+      - ./vendor:/var/www/vendor
+      - ./config/nginx/conf.d:/etc/nginx/conf.d

@@ -7,6 +7,7 @@ component
 	* I initialize an SQS client for the given queue and credentials.
 	*/
 	public void function init(
+		required string environment,
 		required any classLoader,
 		required string accessID,
 		required string secretKey,
@@ -22,22 +23,31 @@ component
 		variables.defaultWaitTime = arguments.defaultWaitTime;
 		variables.defaultVisibilityTimeout = arguments.defaultVisibilityTimeout;
 
-		var basicCredentials = classLoader
-			.load( "com.amazonaws.auth.BasicAWSCredentials" )
-			.init( accessID, secretKey )
-		;
-		var credentialsProvider = classLoader
-			.load( "com.amazonaws.auth.AWSStaticCredentialsProvider" )
-			.init( basicCredentials )
-		;
+		if ( environment == 'DEV' ){
+			var basicCredentials = classLoader
+				.load( "com.amazonaws.auth.BasicAWSCredentials" )
+				.init( accessID, secretKey )
+			;
+			var credentialsProvider = classLoader
+				.load( "com.amazonaws.auth.AWSStaticCredentialsProvider" )
+				.init( basicCredentials )
+			;
 
-		variables.sqsClient = classLoader
-			.load( "com.amazonaws.services.sqs.AmazonSQSClientBuilder" )
-			.standard()
-			.withCredentials( credentialsProvider )
-			.withRegion( region )
-			.build()
-		;
+			variables.sqsClient = classLoader
+				.load( "com.amazonaws.services.sqs.AmazonSQSClientBuilder" )
+				.standard()
+				.withCredentials( credentialsProvider )
+				.withRegion( region )
+				.build()
+			;
+		}else{
+			variables.sqsClient = classLoader
+				.load( "com.amazonaws.services.sqs.AmazonSQSClientBuilder" )
+				.standard()
+				.withRegion( region )
+				.build()
+		}
+		
 
 	}
 

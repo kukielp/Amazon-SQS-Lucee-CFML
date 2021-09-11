@@ -20,3 +20,7 @@ cfconfig import ./.cfconfig.json
 ```
 
 Each of my explorations has its own queue. The Amazon Access ID, Secret Key, and Queue Name are stored in `config.json` files; however, those are not committed to the repository for security reasons. There are, however, `config.template.json` files to see the expected data structure.
+
+## Added Ability to use docker and deply and run on AWS App Runner
+Ensure you have installed [Docker](https://www.docker.com/)
+
